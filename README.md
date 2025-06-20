@@ -24,7 +24,7 @@
   - レイドボスに3回挑戦
   - ギルドミッション達成
 
-ⓒ NCSOFT Corporation. All Rights Reserved.）
+ⓒ NCSOFT Corporation. All Rights Reserved.
 
 ---
 
