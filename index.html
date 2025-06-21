@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B&S クエスト管理</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>B&S クエスト管理</h1>
+      <div id="current-time" aria-live="polite"></div>
+    </header>
+
+    <nav class="controls" role="toolbar" aria-label="アプリケーション操作">
+      <button id="edit-toggle" type="button" aria-pressed="false">編集モード</button>
+      <button id="reset-checks" type="button" aria-label="チェック状態をリセット">チェックリセット</button>
+      <button id="theme-toggle" type="button" aria-label="テーマ切り替え">🌙/☀️</button>
+    </nav>
+
+    <main id="mission-list-container">
+      <section class="mission-section" aria-labelledby="daily-heading">
+        <h2 id="daily-heading">デイリー</h2>
+        <div id="daily-missions" role="group" aria-labelledby="daily-heading"></div>
+      </section>
+      <section class="mission-section" aria-labelledby="weekly-heading">
+        <h2 id="weekly-heading">ウィークリー</h2>
+        <div id="weekly-missions" role="group" aria-labelledby="weekly-heading"></div>
+      </section>
+    </main>
+
+    <section id="edit-section" aria-label="編集操作">
+      <div class="edit-controls">
+        <label for="add-target">追加先:</label>
+        <select id="add-target">
+          <option value="daily">デイリー</option>
+          <option value="weekly">ウィークリー</option>
+        </select>
+        <label for="new-mission-text" class="sr-only">新しいミッション</label>
+        <input type="text" id="new-mission-text" placeholder="ミッションを入力" aria-describedby="add-help">
+        <button id="add-mission" type="button">追加</button>
+      </div>
+      <div class="danger-controls">
+        <button id="reset-missions" type="button" class="danger-btn">項目を初期化</button>
+        <button id="undo-reset" type="button" style="display:none;">元に戻す</button>
+      </div>
+      <div id="add-help" class="sr-only">Enterキーでも追加できます</div>
+    </section>
+
+    <section id="info-section" class="info-section">
+      <button id="info-toggle" type="button" class="info-toggle" aria-expanded="false">
+        <span>使い方・注意点</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div id="info-content" class="info-content">
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>🎯 基本的な使い方</h3>
+            <ul>
+              <li>各ミッションをクリックしてチェック</li>
+              <li>6個チェックするとCOMPLETE表示</li>
+              <li>「チェックリセット」で手動リセット可能</li>
+              <li>「編集モード」でミッションの追加・削除・並び替え(ドラッグ&ドロップ)</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>⏰ 自動リセット機能</h3>
+            <ul>
+              <li><strong>デイリー：</strong>毎日朝6時にリセット</li>
+              <li><strong>ウィークリー：</strong>毎週水曜日朝6時にリセット</li>
+              <li>ブラウザを開いていなくても次回アクセス時に適用</li>
+              <li>手動リセットはいつでも可能</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>✏️ 編集機能</h3>
+            <ul>
+              <li>「編集モード」ボタンで編集画面を表示</li>
+              <li>新しいミッションを追加可能</li>
+              <li>ドラッグ&ドロップで順序変更</li>
+              <li>🗑️ボタンで個別削除</li>
+              <li>「項目を初期化」で全てリセット（取り消し可能）</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>⚠️ 注意点</h3>
+            <ul>
+              <li>データはブラウザに保存されます</li>
+              <li>ブラウザのデータを削除すると設定がリセット</li>
+              <li>他のデバイスとは同期されません</li>
+              <li>プライベートモードでは保存されません</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>🌙 その他の機能</h3>
+            <ul>
+              <li>🌙/☀️ボタンでダークモード切り替え</li>
+              <li>スマホ解像度対応</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>💡 Tips</h3>
+            <ul>
+              <li>Enterキーだけでもミッション追加可能</li>
+              <li>編集モード中はチェックボックス無効</li>
+              <li>完了したミッションは緑色で表示</li>
+              <li>設定は自動保存されます</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="license">
+    © NCSOFT Corporation. Licensed to NC Japan K.K. All Rights Reserved.
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

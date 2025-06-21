@@ -1,0 +1,629 @@
+/* CSS変数の定義 */
+:root {
+  --bg-primary: #fff;
+  --bg-secondary: #f9f9f9;
+  --bg-hover: #e1f0ff;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --accent: #3498db;
+  --danger: #e74c3c;
+  --checked-bg: #d0f0d0;
+  --checked-color: #2d7a2d;
+  --checked-hover-bg: #b8e6b8;
+  --border-color: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* ベーススタイル */
+* {
+  box-sizing: border-box;
+}
+
+/* ロゴ用 */
+body::before {
+  content: "";
+  position: fixed;
+  top: -30px;
+  left: 20px;
+  width: min(500px, 30vw); /* レスポンシブサイズ */
+  height: min(290px, 24vw);
+  background: url("b&s_logo.webp") no-repeat center;
+  background-size: contain;
+  opacity: 1;
+  filter: brightness(1) blur(0px);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.3s ease; /* スムーズな変化 */
+}
+
+/* ダークモード時の調整 */
+body.dark::before {
+  opacity: 1; /* ダークモードでより薄く */
+  filter: brightness(1) blur(0px); /* 明るさ調整 */
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  body::before {
+    width: min(200px, 20vw);
+    height: min(190px, 19vw);
+    top: 10px;
+    left: 10px;
+    opacity: 0.05; /* モバイルではより薄く */
+  }
+}
+
+/* 超小画面では非表示 */
+@media (max-width: 480px) {
+  body::before {
+    display: none;
+  }
+}
+/* ロゴ用ここまで */
+
+body {
+  font-family: "DotGothic16", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+  line-height: 1.6;
+}
+
+/* ダークテーマ */
+body.dark {
+  --bg-primary: #222;
+  --bg-secondary: #2c2c2c;
+  --bg-hover: #3a5f7d;
+  --text-primary: #eee;
+  --text-secondary: #bbb;
+  --accent: #5dade2;
+  --danger: #ec7063;
+  --checked-bg: #305830;
+  --checked-color: #a6d68f;
+  --checked-hover-bg: #2a4e28;
+  --border-color: #444;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+body.dark .container {
+  /*background-color: rgba(30, 30, 30, 0.9);*/ /* ダークモード背景色 使うのやめた */
+}
+
+/* スクリーンリーダー専用 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* レイアウト */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  /*background-color: rgba(255, 255, 255, 0.9);*/　/* 背景色 使うのやめた */
+  border-radius: 10px;
+  /*box-shadow: 0 4px 12px var(--shadow);*/　/* 縁の影 使うのやめた */
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+/* 時刻表示 */
+#current-time {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* コントロール */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.controls button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.controls button:hover,
+.controls button:focus {
+  background-color: var(--accent);
+  color: white;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.controls button:focus {
+  outline-style: solid;
+}
+
+/* ミッション一覧 */
+#mission-list-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.mission-section {
+  flex: 1 1 45%;
+  min-width: 280px;
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+}
+
+.mission-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+/* 編集セクション */
+#edit-section {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+}
+
+#edit-section.show {
+  display: flex;
+}
+
+.edit-controls,
+.danger-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.danger-controls {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+#edit-section label {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+#edit-section input,
+#edit-section select,
+#edit-section button {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+#edit-section button {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#edit-section button:hover,
+#edit-section button:focus {
+  background: var(--bg-hover);
+  color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.danger-btn {
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+}
+
+.danger-btn:hover,
+.danger-btn:focus {
+  background: var(--bg-primary) !important;
+  color: var(--danger) !important;
+}
+
+/* ミッションリスト */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+li {
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--bg-primary);
+  transition: all 0.2s;
+  user-select: none;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li:nth-child(even) {
+  background-color: var(--bg-secondary);
+}
+
+li:hover {
+  background-color: var(--bg-hover);
+}
+
+li:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* チェック済みスタイル */
+li.checked {
+  background-color: var(--checked-bg);
+  color: var(--checked-color);
+}
+
+li.checked:hover {
+  background-color: var(--checked-hover-bg);
+}
+
+li.checked:nth-child(even) {
+  background-color: var(--checked-bg);
+}
+
+/* ラベル */
+li label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  flex-grow: 1;
+  min-height: 24px;
+}
+
+li input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+li input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 削除ボタン */
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: none;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover,
+.delete-btn:focus {
+  background-color: var(--danger);
+  color: white;
+  outline: 2px solid var(--danger);
+  outline-offset: 2px;
+}
+
+.editing .delete-btn {
+  display: inline-block;
+}
+
+/* ミッションカウンター */
+.mission-counter {
+  margin-bottom: 10px;
+  text-align: right;
+  font-weight: bold;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.mission-counter.complete {
+  color: var(--checked-color);
+  background: var(--checked-bg);
+  border-color: var(--checked-color);
+}
+
+/* ドラッグ&ドロップ */
+.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.drag-over {
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+  background-color: var(--bg-hover) !important;
+}
+
+li[draggable="true"] {
+  cursor: move;
+}
+
+li[draggable="true"]:hover {
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* フォーカス管理 */
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .mission-section {
+    flex: 1 1 100%;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edit-controls,
+  .danger-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #edit-section input,
+  #edit-section select,
+  #edit-section button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .mission-section {
+    padding: 10px;
+  }
+
+  li {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .controls button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .mission-counter {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+}
+
+/* 印刷スタイル */
+@media print {
+  .controls,
+  #edit-section,
+  .delete-btn {
+    display: none !important;
+  }
+
+  .container {
+    box-shadow: none;
+    background: white;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* 情報セクション */
+.info-section {
+  margin-top: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.info-toggle {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--bg-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  transition: all 0.2s;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-toggle:hover,
+.info-toggle:focus {
+  background: var(--bg-hover);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.toggle-icon {
+  transition: transform 0.2s;
+  font-size: 0.9rem;
+}
+
+.info-toggle[aria-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.info-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.info-content.show {
+  max-height: 2000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.info-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+.info-card h3 {
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-card ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.info-card li {
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  padding: 0;
+  display: list-item;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.info-card li:hover {
+  background: none;
+}
+
+.info-card li strong {
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .info-toggle {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+
+  .info-card {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-toggle {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .info-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .info-card li {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+}
+
+/* 印刷時は非表示 */
+@media print {
+  .info-section {
+    display: none !important;
+  }
+}
+
+.license {
+  font-family: "Shippori Antique", sans-serif;
+  font-size: 10px;
+  text-align: center;
+}
